@@ -58,3 +58,5 @@ sendFromNumber = os.environ.get("twilioSendFromNumber")
 # If text is not found, probably have a parking ticket (or they changed the text for some reason), also check for text if parking ticket was found
 if not ticketTextFound and searchTextFound:
     smsHelper.sendText(sendToNumber, sendFromNumber, "Looks like you got another frickin parking ticket. Check the website.")
+else:
+    print("NO TICKET")
