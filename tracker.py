@@ -1,16 +1,18 @@
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
+from smsAPI import SmsAPI
 import time
 import re
+import config
 
 ## Store the parking website url
 phillyParkingUrl = "https://onlineserviceshub.com/ParkingPortal/Philadelphia"
 
 # Store your license plate
-hondaCivicLicensePlate = "JVD3620"
+hondaCivicLicensePlate = config.hoangLicensePlate
 
 # Access the driver
-driver = webdriver.Chrome(executable_path="/Volumes/Hoang_T5_SSD/Programming/chromedriver83")
+driver = webdriver.Chrome(executable_path=config.chromeDriverPath)
 
 # Access the parking website
 driver.get(phillyParkingUrl)
@@ -45,6 +47,13 @@ pageSource = driver.page_source
 ticketTextFound = re.search(r"A payment has already been entered for this ticket.", pageSource)
 searchTextFound = re.search(r"Search Results", pageSource)
 
+# Create smsHelper object to send texts
+smsHelper = SmsAPI(config.twilioAccountSID, config.twilioAuthenticationToken)
+
+# Define the send and receive numbers
+sendToNumber = config.hoangPhoneNumber
+sendFromNumber = config.twilioSendFromNumber
+
 # If text is not found, probably have a parking ticket (or they changed the text for some reason), also check for text if parking ticket was found
 if not ticketTextFound and searchTextFound:
-    print("Send text to phone that car was ticketed.")
+    smsHelper.sendText(sendToNumber, sendFromNumber, "Looks like you got another frickin parking ticket. Check the website.")
