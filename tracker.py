@@ -3,7 +3,7 @@ from selenium.webdriver.support.select import Select
 from smsAPI import SmsAPI
 import time
 import re
-import config
+# import config
 import os
 
 ## Store the parking website url
