@@ -4,15 +4,16 @@ from smsAPI import SmsAPI
 import time
 import re
 import config
+import os
 
 ## Store the parking website url
 phillyParkingUrl = "https://onlineserviceshub.com/ParkingPortal/Philadelphia"
 
 # Store your license plate
-hondaCivicLicensePlate = config.hoangLicensePlate
+hondaCivicLicensePlate = os.environ.hoangLicensePlate
 
 # Access the driver
-driver = webdriver.Chrome(executable_path=config.chromeDriverPath)
+driver = webdriver.Chrome(executable_path=os.environ.chromeDriverPath)
 
 # Access the parking website
 driver.get(phillyParkingUrl)
@@ -48,11 +49,11 @@ ticketTextFound = re.search(r"A payment has already been entered for this ticket
 searchTextFound = re.search(r"Search Results", pageSource)
 
 # Create smsHelper object to send texts
-smsHelper = SmsAPI(config.twilioAccountSID, config.twilioAuthenticationToken)
+smsHelper = SmsAPI(os.environ.twilioAccountSID, os.environ.twilioAuthenticationToken)
 
 # Define the send and receive numbers
-sendToNumber = config.hoangPhoneNumber
-sendFromNumber = config.twilioSendFromNumber
+sendToNumber = os.environ.hoangPhoneNumber
+sendFromNumber = os.environ.twilioSendFromNumber
 
 # If text is not found, probably have a parking ticket (or they changed the text for some reason), also check for text if parking ticket was found
 if not ticketTextFound and searchTextFound:
