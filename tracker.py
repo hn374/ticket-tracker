@@ -1,5 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as expectedConditions
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 from smsAPI import SmsAPI
 import time
 import re
@@ -23,8 +27,10 @@ driver = webdriver.Chrome(executable_path=os.environ.get("chromeDriverPath"), ch
 # Access the parking website
 driver.get(phillyParkingUrl)
 
-# Pause to load
-time.sleep(10)
+try:
+    element = WebDriverWait(driver, 20).until(expectedConditions.element_to_be_clickable(((By.XPATH, "/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))))
+except TimeoutException:
+    smsHelper.sendText(sendToNumber, sendFromNumber, "Loading the website took too much time.")
 
 # Select the search dropdown and select the license plate option
 searchDropdown = Select(driver.find_element_by_xpath("/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))
