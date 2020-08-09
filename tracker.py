@@ -20,9 +20,6 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 driver = webdriver.Chrome(executable_path=os.environ.get("chromeDriverPath"), chrome_options=chrome_options)
 
-# Access the driver
-# driver = webdriver.Chrome(executable_path=os.environ.get("chromeDriverPath"))
-
 # Access the parking website
 driver.get(phillyParkingUrl)
 
@@ -63,9 +60,13 @@ smsHelper = SmsAPI(os.environ.get("twilioAccountSID"), os.environ.get("twilioAut
 sendToNumber = os.environ.get("hoangPhoneNumber")
 sendFromNumber = os.environ.get("twilioSendFromNumber")
 
+today = date.today().strftime("%B %d, %Y")
 # If text is not found, probably have a parking ticket (or they changed the text for some reason), also check for text if parking ticket was found
 if not ticketTextFound and searchTextFound:
-    smsHelper.sendText(sendToNumber, sendFromNumber, "Looks like you got another frickin parking ticket. Check the website.")
+    ticketAlert = "Looks like you got another frickin parking ticket. Check the website. Date: " + today
+    print(ticketAlert)
+    smsHelper.sendText(sendToNumber, sendFromNumber, )
 else:
-    today = date.today().strftime("%B %d, %Y")
-    print("No ticket as of:", today)
+    noTicketAlert = "No ticket as of: " + today
+    print(noTicketAlert)
+    smsHelper.sendText(sendToNumber, sendFromNumber, noTicketAlert)
