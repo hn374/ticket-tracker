@@ -3,8 +3,8 @@ from selenium.webdriver.support.select import Select
 from smsAPI import SmsAPI
 import time
 import re
-# import config
 import os
+from datetime import date
 
 ## Store the parking website url
 phillyParkingUrl = "https://onlineserviceshub.com/ParkingPortal/Philadelphia"
@@ -67,4 +67,5 @@ sendFromNumber = os.environ.get("twilioSendFromNumber")
 if not ticketTextFound and searchTextFound:
     smsHelper.sendText(sendToNumber, sendFromNumber, "Looks like you got another frickin parking ticket. Check the website.")
 else:
-    print("NO TICKET")
+    today = date.today().strftime("%B %d, %Y")
+    print("No ticket as of:", today)
