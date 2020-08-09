@@ -24,7 +24,7 @@ driver = webdriver.Chrome(executable_path=os.environ.get("chromeDriverPath"), ch
 driver.get(phillyParkingUrl)
 
 # Pause to load
-time.sleep(1)
+time.sleep(10)
 
 # Select the search dropdown and select the license plate option
 searchDropdown = Select(driver.find_element_by_xpath("/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))
