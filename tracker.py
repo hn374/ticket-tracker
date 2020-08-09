@@ -65,7 +65,7 @@ today = date.today().strftime("%B %d, %Y")
 if not ticketTextFound and searchTextFound:
     ticketAlert = "Looks like you got another frickin parking ticket. Check the website. Date: " + today
     print(ticketAlert)
-    smsHelper.sendText(sendToNumber, sendFromNumber, )
+    smsHelper.sendText(sendToNumber, sendFromNumber, ticketAlert)
 else:
     noTicketAlert = "No ticket as of: " + today
     print(noTicketAlert)
