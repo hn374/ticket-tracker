@@ -24,13 +24,23 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 driver = webdriver.Chrome(executable_path=os.environ.get("chromeDriverPath"), chrome_options=chrome_options)
 
+# Create smsHelper object to send texts
+smsHelper = SmsAPI(os.environ.get("twilioAccountSID"), os.environ.get("twilioAuthenticationToken"))
+
+# Define the send and receive numbers
+sendToNumber = os.environ.get("hoangPhoneNumber")
+sendFromNumber = os.environ.get("twilioSendFromNumber")
+
 # Access the parking website
 driver.get(phillyParkingUrl)
 
-try:
-    element = WebDriverWait(driver, 20).until(expectedConditions.element_to_be_clickable(((By.XPATH, "/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))))
-except TimeoutException:
-    smsHelper.sendText(sendToNumber, sendFromNumber, "Loading the website took too much time.")
+while 1:
+    try:
+        element = WebDriverWait(driver, 20).until(expectedConditions.element_to_be_clickable(((By.XPATH, "/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))))
+        break
+    except TimeoutException:
+        print("Loading the website took too much time.")
+        # smsHelper.sendText(sendToNumber, sendFromNumber, "Loading the website took too much time.")
 
 # Select the search dropdown and select the license plate option
 searchDropdown = Select(driver.find_element_by_xpath("/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))
@@ -59,14 +69,8 @@ pageSource = driver.page_source
 ticketTextFound = re.search(r"A payment has already been entered for this ticket.", pageSource)
 searchTextFound = re.search(r"Search Results", pageSource)
 
-# Create smsHelper object to send texts
-smsHelper = SmsAPI(os.environ.get("twilioAccountSID"), os.environ.get("twilioAuthenticationToken"))
-
-# Define the send and receive numbers
-sendToNumber = os.environ.get("hoangPhoneNumber")
-sendFromNumber = os.environ.get("twilioSendFromNumber")
-
 today = date.today().strftime("%B %d, %Y")
+
 # If text is not found, probably have a parking ticket (or they changed the text for some reason), also check for text if parking ticket was found
 if not ticketTextFound and searchTextFound:
     ticketAlert = "Looks like you got another frickin parking ticket. Check the website. Date: " + today
