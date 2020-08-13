@@ -43,7 +43,7 @@ driver.get(phillyParkingUrl)
         # smsHelper.sendText(sendToNumber, sendFromNumber, "Loading the website took too much time.")
 
 try:
-    element = WebDriverWait(driver, 60).until(expectedConditions.element_to_be_clickable(((By.XPATH, "/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))))
+    element = WebDriverWait(driver, 10).until(expectedConditions.element_to_be_clickable(((By.XPATH, "/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))))
 except TimeoutException:
     smsHelper.sendText(sendToNumber, sendFromNumber, "Loading the website took too much time.")
 
