@@ -71,7 +71,7 @@ time.sleep(1)
 
 # Grab the page source and use a regular expression to search the site and see if a ticket was given
 pageSource = driver.page_source
-ticketTextFound = re.search(r"A payment has already been entered for this ticket.", pageSource)
+ticketTextFound = re.search(r"No search results. Please check your information and try again.", pageSource)
 searchTextFound = re.search(r"Search Results", pageSource)
 
 today = date.today().strftime("%B %d, %Y")
