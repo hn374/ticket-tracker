@@ -34,13 +34,14 @@ sendFromNumber = os.environ.get("twilioSendFromNumber")
 # Access the parking website
 driver.get(phillyParkingUrl)
 
-# while 1:
-#     try:
-#         element = WebDriverWait(driver, 20).until(expectedConditions.element_to_be_clickable(((By.XPATH, "/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))))
-#         break
-#     except TimeoutException:
-#         print("Loading the website took too much time.")
-        # smsHelper.sendText(sendToNumber, sendFromNumber, "Loading the website took too much time.")
+if len(driver.find_element_by_xpath("/html/body/div[3]/div/div/div[2]/form/div/div[2]/div[2]/p[11]/input")) > 0:
+    # Check for modal of terms and use agreement
+    checkbox = Select(driver.find_element_by_xpath("/html/body/div[3]/div/div/div[2]/form/div/div[2]/div[2]/p[11]/input"))
+    checkbox.click()
+
+    # Click on the continue button in the modal
+    continueButton = Select(driver.find_element_by_xpath("/html/body/div[3]/div/div/div[2]/form/div/div[2]/div[3]/div/div[1]/button"))
+    continueButton.click()
 
 try:
     element = WebDriverWait(driver, 10).until(expectedConditions.element_to_be_clickable(((By.XPATH, "/html/body/div[2]/div[2]/form/div/div[2]/div[1]/select"))))
