@@ -34,7 +34,8 @@ sendFromNumber = os.environ.get("twilioSendFromNumber")
 # Access the parking website
 driver.get(phillyParkingUrl)
 
-if len(driver.find_element_by_xpath("/html/body/div[3]/div/div/div[2]/form/div/div[2]/div[2]/p[11]/input")) > 0:
+# If the modal pops up
+if driver.find_element_by_xpath("/html/body/div[3]/div/div/div[2]/form/div/div[2]/div[2]/p[11]/input"):
     # Check for modal of terms and use agreement
     checkbox = Select(driver.find_element_by_xpath("/html/body/div[3]/div/div/div[2]/form/div/div[2]/div[2]/p[11]/input"))
     checkbox.click()
